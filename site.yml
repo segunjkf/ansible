@@ -1,11 +1,23 @@
 ---
+- hosts: db_servers
+  become: true
+  pre_tasks:
+
+  - name: install docker 
+    package: 
+       name: 
+         - docker 
+       update_only: yes   
+
+
+
 - hosts: all
   become: true
   tasks:
 
 
   - name: install apache and php
-    package:
+    apt:
       name:
         - apache2
         - libapache2-mod-php
