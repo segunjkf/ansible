@@ -2,8 +2,9 @@
 - hosts: db_servers
   become: true
   pre_tasks:
-
-  - name: install docker 
+  
+  - name: install docker
+    tags: always 
     package: 
        name: 
          - docker 
@@ -17,10 +18,13 @@
 
 
   - name: install apache and php
+    tags: apache2,php
     apt:
       name:
         - apache2
         - libapache2-mod-php
+        - samba
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+   
