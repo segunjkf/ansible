@@ -1,44 +1,44 @@
----
-- hosts: db_servers
+--- 
+- 
   become: true
-  pre_tasks:
-  
-  - name: install docker
-    tags: always 
-    package: 
-       name: 
-         - docker
-         - httpd 
-       update_only: yes   
-
-
-
-- hosts: all
+  hosts: db_servers
+  pre_tasks: 
+    - 
+      name: "install docker"
+      package: 
+        name: 
+          - docker
+          - httpd
+        update_only: true
+      tags: always
+- 
   become: true
-  tasks:
-
-
-  - name: install apache and php
-    tags: apache2,php
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-        - samba
-      state: latest
-      update_cache: yes
-    when: ansible_distribution == "Ubuntu"
-  - name: copy default html
-    tags: html
-    copy: 
-      src: website.html
-      dest: /var/www/html/index.html
-      owner: root 
-      group: root
-      mode: 0644
-
-  - name: apache for amazon 
-      yum:
-       name:
-         - httpd
-       when: ansible_distribution == "Amazon Linux" 
+  hosts: all
+  tasks: 
+    - 
+      apt: 
+        name: 
+          - apache2
+          - libapache2-mod-php
+          - samba
+        state: latest
+        update_cache: true
+      name: "install apache and php"
+      tags: "apache2,php"
+      when: "ansible_distribution == \"Ubuntu\""
+    - 
+      copy: 
+        dest: /var/www/html/index.html
+        group: root
+        mode: 420
+        owner: root
+        src: website.html
+      name: "copy default html"
+      tags: html
+    - 
+      name: "apache for amazon"
+      tags: 
+        yum: 
+          name: 
+            - httpd
+          when: "ansible_distribution == \"Amazon Linux\""
