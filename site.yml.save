@@ -1,4 +1,4 @@
----
+ ---
 - hosts: db_servers
   become: true
   pre_tasks:
@@ -7,8 +7,7 @@
     tags: always 
     package: 
        name: 
-         - docker
-         - httpd 
+         - docker 
        update_only: yes   
 
 
@@ -36,9 +35,6 @@
       owner: root 
       group: root
       mode: 0644
-
-  - name: apache for amazon 
-      yum:
-       name:
-         - httpd
-       when: ansible_distribution == "Amazon Linux" 
+   
+  - name: 
+    unarchive: 
