@@ -1,15 +1,43 @@
 ---
-- hosts: db_servers
+- hosts: all
   become: true
   pre_tasks:
   
   - name: install docker
     tags: always 
-    package: 
+    yum: 
        name: 
          - docker
+        
          - httpd 
-       update_only: yes   
+       #update_only: yes   
+
+
+- hosts: all
+  become: true
+  tasks: 
+  - name: manage users
+    tags: always
+    user: 
+       name: femi
+       groups: root
+  - name: add shh key
+    tags: always
+    authorized_key: 
+       user: femi
+       key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQn955FzQkqE21oiQEMLyuaUlgh02Qobvr+DpnX4H4J segun"
+  - name: add sudoers file for simone
+    copy: 
+       src: sudoer_simone
+       dest: /etc/sudoers.d/simone
+       owner: root
+       group: root
+       mode: 0440    
+   
+    
+
+
+
 
 
 
@@ -28,6 +56,7 @@
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
+
   - name: copy default html
     tags: html
     copy: 
@@ -36,9 +65,11 @@
       owner: root 
       group: root
       mode: 0644
-
-  - name: apache for amazon 
-      yum:
-       name:
-         - httpd
-       when: ansible_distribution == "Amazon Linux" 
+ 
+  - name: start service
+    tags: apache2
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+  
