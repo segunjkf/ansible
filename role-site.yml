@@ -1,29 +1,30 @@
 ---
-- hosts: all
-  become: true
-  pre_tasks:
+
+-  hosts: all
+   become: true
+   pre_tasks:
   
-  - name: install docker
-    tags: always 
-    yum: 
+   - name: install docker
+     tags: always 
+     yum: 
        name: 
          - docker
         
          - httpd 
        update_only: yes
-    changed_when: false
-       update_cache: yes 
+     changed_when: false
+        
 
 
-- host: all
-  become: true
-  roles: 
-    - base
-- hosts: db_servers 
-  become: true
-  roles: 
-     - db_servers 
-- host: mongo_db 
-  become: true
-  roles:
-    - mongo_db
+-  hosts: all
+   become: true
+   roles: 
+     - base
+-  hosts: db_servers 
+   become: true
+   roles: 
+      - db_servers 
+-  hosts: mongo_db 
+   become: true
+   roles:
+     - db_servers

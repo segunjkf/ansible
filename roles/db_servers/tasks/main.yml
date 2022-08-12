@@ -1,0 +1,12 @@
+- name: install docker
+  tags: os 
+  yum: 
+     name:
+       - git
+     state: uninstall
+- name: apache
+  tags: web-servers 
+    yum:
+      name:
+       - httpd
+      state: uninstall
